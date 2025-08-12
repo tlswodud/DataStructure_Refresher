@@ -83,7 +83,7 @@ public:
 
 		// TODO: 하나하나 복사하는 방식은 쉽게 구현할 수 있습니다. 
 		//     효울적  (도전) 경우를 나눠서 memcpy()로 블럭 단위로 복사하면 더 효율적입니다.
-
+			int capacity_2 = capacity_;
 			capacity_ = capacity_ * 2;
 			T* new_queue = new T[capacity_];
 			
@@ -91,7 +91,22 @@ public:
 			
 			if (front_ == rear_ + 1)
 			{
-				memcpy(new_queue[1:], queue_[capacity_], sizeof(T) * capacity_);
+				int j = 1;
+				for (int i = front_ + 1 ; i <capacity_2 ;i++)
+				{
+					new_queue[j] = queue_[i];
+					j++;
+				}
+
+				for (int k = 0; k < front_;k++)
+				{
+					new_queue[j] = queue_[k];
+					j++;
+				}
+
+
+				front_ = 0;
+				rear_ = capacity_2 -1;
 
 			}
 
