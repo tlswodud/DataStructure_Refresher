@@ -47,6 +47,34 @@ struct Pos
 		cout << "(" << pos.row << ", " << pos.col << ")" << flush;
 		return os;
 	}
+	/*
+1)
+operator<<는 뭐야?
+우리가 cout << 변수; 할 때, 변수의 내용을 어떻게 보여줄지 컴퓨터에게 알려주는 방법이에요.
+
+컴퓨터는 기본 자료형(int, double 등)은 알아서 출력하지만, 내가 만든 Pos 같은 건 어떻게 보여줄지 몰라요. 그래서 우리가 직접 알려줘야 해요.
+
+2)
+friend ostream& operator<<(ostream& os, const Pos& pos) 이건 뭐야?
+cout << pos;가 쓰일 때 실행되는 함수에요.
+
+os는 cout 같은 출력 도구(출력 스트림)이고,
+
+pos는 출력할 내 Pos 객체예요.
+
+3)
+왜 friend야?
+이 함수는 Pos 구조체 안에 있지만, Pos의 멤버 함수가 아니에요.
+
+friend는 이 함수에게 Pos 안에 있는 row, col 같은 친구 멤버 변수들을 특별히 볼 수 있게 허락해주는 열쇠 같은 거예요.
+
+(사실 여기서는 row와 col이 public이라서 안 써도 되지만 보통 이렇게 많이 써요.)
+
+4)
+마지막에 왜 return os; 해?
+cout << pos1 << pos2;처럼 여러 개를 한 줄에 이어서 출력할 수 있게, 출력 스트림을 돌려주는 거예요.
+	
+	*/
 };
 
 //void RecurMaze(Pos p) // 재귀호출방식 
@@ -125,10 +153,10 @@ void StackMaze() // 스텍 풀이
 
 	while (!s.IsEmpty())
 	{
-		Pos p = s.Top();
+		Pos p = s.Top(); // 미리 p 에 넣어줬구나 
 		s.Pop();
 
-		cout << p << " "; // 디버깅 출력
+		cout << p << " "; // 디버깅 출력 그래서 출력되는거고
 
 		const char mark = maze[p.row][p.col];
 

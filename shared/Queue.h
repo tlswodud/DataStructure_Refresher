@@ -50,14 +50,18 @@ public:
 	int Size() const
 	{
 		// 하나하나 세는 방법 보다는 경우를 따져서 바로 계산하는 것이 빠릅니다.
-
+		// 3가지 경우 
+		// 
+		// f  = r  , f > r , r > f
+		// 
+		// 
 		// if-else-if-else로 구현하는 경우
-		//if (...)
-		//	return ...;
-		//else if (...)
-		//	return ...;
-		//else
-		//	return 0;
+		if (rear_ > front_)
+			return rear_ - front_;
+		else if (rear_ < front_)
+			return capacity_ - (front_ +1 ) + rear_;
+		else
+			return capacity_;
 
 		// 또는 if-else 하나로도 구현 가능합니다.
 		// if (...)
@@ -78,14 +82,45 @@ public:
 		// - 힘들면 디스코드에서 조금씩 도움 받으시는 것도 좋아요.
 
 		// TODO: 하나하나 복사하는 방식은 쉽게 구현할 수 있습니다. 
-		//       (도전) 경우를 나눠서 memcpy()로 블럭 단위로 복사하면 더 효율적입니다.
+		//     효울적  (도전) 경우를 나눠서 memcpy()로 블럭 단위로 복사하면 더 효율적입니다.
+
+			capacity_ = capacity_ * 2;
+			T* new_queue = new T[capacity_];
+			
+			memcpy(new_queue, queue_, sizeof(T) * capacity_);
+			
+			if (front_ == rear_ + 1)
+			{
+				memcpy(new_queue[1:], queue_[capacity_], sizeof(T) * capacity_);
+
+			}
+
+
+			if (queue_) delete[] queue_;
+			queue_ = new_queue;
+
+				
+			
+		
+
 	}
 
 	void Enqueue(const T& item) // 맨 뒤에 추가, Push()
 	{
 		if (IsFull())
 			Resize();
+		if (capacity_ == rear_ + 1)
+		{
+			rear_ = 0;
+			queue_[rear_] = item;
+		}
+		else {
+			rear_ = rear_ + 1;
 
+			queue_[rear_] = item;
+		
+		}
+	
 		// TODO:
 	}
 
@@ -94,6 +129,20 @@ public:
 		assert(!IsEmpty());
 
 		// TODO: 
+
+		if (front_ == capacity_)
+		{
+			front_ = 0;
+
+			queue_[front_] = '-';
+		}
+		else {
+			front_ = front_ + 1;
+
+			queue_[front_] = '-';
+		}
+
+
 	}
 
 	void Print()

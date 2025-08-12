@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Stack<char> tower[3];
+Stack<char> tower[3]; // 타워 3개를 스택으로 
 
 void PrintTowers()
 {
@@ -18,7 +18,7 @@ void PrintTowers()
 }
 
 // 실제로 디스크를 움직여서 스택들을 업데이트
-void MoveDisk(int from, int to)
+void MoveDisk(int from, int to) // 
 {
 	if (tower[from].IsEmpty())
 	{
@@ -36,21 +36,29 @@ void MoveDisk(int from, int to)
 		exit(0); // 오류 강제 종료
 	}
 
-	tower[from].Pop();
+	tower[from].Pop(); // 꺼낸
 	tower[to].Push(disk);
 
 	cout << "Move disk " << disk << " from " << from << " to " << to << endl;
 	PrintTowers();
 }
 
-void RecurMoveDisks(int n, int from, int temp, int to)
+void RecurMoveDisks(int n, int from, int temp, int to) // 0 , 1 ,2
 {
 	// TODO:
+	if (n == 0) return;
+
+	RecurMoveDisks(n - 1, from, to, temp); // 0 , 2 ,1 가운데로 이동해주는것
+
+	MoveDisk(from, to); //가장 처음 실행되는건  0 번에서 1번으로 이동 
+
+	RecurMoveDisks(n - 1, temp, from, to);
+
 }
 
 int main()
 {
-	int num_disks = 5;
+	int num_disks = 3;
 
 	for (int i = 0; i < num_disks; i++)
 		tower[0].Push('A' + i);
