@@ -103,20 +103,12 @@ public:
 					new_queue[j] = queue_[k];
 					j++;
 				}
-
-
 				front_ = 0;
 				rear_ = capacity_2 -1;
 
 			}
-
-
 			if (queue_) delete[] queue_;
 			queue_ = new_queue;
-
-				
-			
-		
 
 	}
 
