@@ -32,8 +32,16 @@ public:
 		// 원형 큐에서 꽉 찼다의 기준
 		return (rear_ + 1) % capacity_ == front_;
 	}
+	/*
+	T& 은 T타입의 참조reference 를 반환한다는거다 
+	즉 함수가 리턴할때 T 값 그 자체가 아닌 어떤 변수나 배열의 매모리 위치를 
+	가리키는 별명 을 넘겨준다는거다
 
-	T& Front() const
+	이 참조를 통해 함수 호출자는 그 변수를 직접 읽거나 수정할수 있다
+
+	값을 복사하는것이 아닌 원본 변수의 위치를 알려주는거다.
+	*/
+	T& Front() const 
 	{
 		assert(!IsEmpty());
 
@@ -59,17 +67,17 @@ public:
 		if (rear_ > front_)
 			return rear_ - front_;
 		else if (rear_ < front_)
-			return capacity_ - (front_ +1 ) + rear_;
+			return capacity_ - (front_) + rear_; 
 		else
-			return capacity_;
+			return 0;
 
 		// 또는 if-else 하나로도 구현 가능합니다.
-		// if (...)
-		//	  return ...;
+		// if (front_ < rear_)
+		//	  return rea;
 		// else
 		//    return ...;
 
-		return 0; // TODO: 임시
+		//return 0; // TODO: 임시
 	}
 
 	void Resize() // 2배씩 증가
@@ -83,32 +91,53 @@ public:
 
 		// TODO: 하나하나 복사하는 방식은 쉽게 구현할 수 있습니다. 
 		//     효울적  (도전) 경우를 나눠서 memcpy()로 블럭 단위로 복사하면 더 효율적입니다.
-			int capacity_2 = capacity_;
+			
+		//MYCODE -----
+			/*int capacity_2 = capacity_;
 			capacity_ = capacity_ * 2;
 			T* new_queue = new T[capacity_];
 			
 			memcpy(new_queue, queue_, sizeof(T) * capacity_);
 			
-			if (front_ == rear_ + 1)
+			if (front_ == rear_ + 1) // 원형 큐가 전부 차서 Resize해야하는 경우 
 			{
-				int j = 1;
-				for (int i = front_ + 1 ; i <capacity_2 ;i++)
+				int j = 1; // 난 j 로 했고 
+				for (int i = front_ + 1 ; i <capacity_2 ;i++)  // front_ 위로 증가 
 				{
-					new_queue[j] = queue_[i];
+					new_queue[j] = queue_[i]; // 삽입
 					j++;
 				}
 
-				for (int k = 0; k < front_;k++)
+				for (int k = 0; k < front_;k++) // 다했다면 0 부터 front_ 까지 증가 
 				{
 					new_queue[j] = queue_[k];
 					j++;
 				}
+				//초기화 
+
 				front_ = 0;
 				rear_ = capacity_2 -1;
 
 			}
+			// 기존 데이터 삭제후 새로 데이터 삽입
 			if (queue_) delete[] queue_;
-			queue_ = new_queue;
+			queue_ = new_queue;*/ // 
+		//강의 코드
+		T* new_queue = new T[2 * capacity_];
+		
+		int count = 1;
+		for (int i = (front_ + 1) % capacity_; i != (rear_ + 1) % capacity_; i = (i + 1) % capacity_)
+		{ // 이 코드는 원형 처럼 돌려서 rear_ 까지 i 를 front +1 위치 부터 넣어주는 for문  
+			new_queue[count] = queue_[i];
+			count++;
+		}
+
+		front_ = 0;
+		rear_ = capacity_ - 1;
+		capacity_ *= 2;
+		delete[] queue_;
+		queue_ = new_queue;
+
 
 	}
 
@@ -116,7 +145,7 @@ public:
 	{
 		if (IsFull())
 			Resize();
-		if (capacity_ == rear_ + 1)
+		/*if (capacity_ == rear_ + 1)
 		{
 			rear_ = 0;
 			queue_[rear_] = item;
@@ -126,8 +155,11 @@ public:
 
 			queue_[rear_] = item;
 		
-		}
-	
+		}*/
+		
+		rear_ = (rear_ + 1) % capacity_;
+		queue_[rear_] = item;
+
 		// TODO:
 	}
 
@@ -137,18 +169,19 @@ public:
 
 		// TODO: 
 
-		if (front_ == capacity_)
-		{
-			front_ = 0;
+		//if (front_ == capacity_)
+		//{
+		//	front_ = 0;
 
-			queue_[front_] = '-';
-		}
-		else {
-			front_ = front_ + 1;
+		//	queue_[front_] = '-';
+		//}
+		//else {
+		//	front_ = front_ + 1;
 
-			queue_[front_] = '-';
-		}
+		//	queue_[front_] = '-';
+		//}
 
+		front_ = (front_ + 1) % capacity_;
 
 	}
 
