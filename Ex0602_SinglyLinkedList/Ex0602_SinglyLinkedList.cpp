@@ -3,12 +3,15 @@
 #include "../shared/SinglyLinkedList.h"
 
 using namespace std;
+/*
+꼼꼼하게 주소 연결을 확인하는 것을 권장한다
 
+*/
 int main()
 {
-	SinglyLinkedList<int> list;
+	SinglyLinkedList<int> list; 
 
-	list.SetPrintDebug(false);
+	list.SetPrintDebug(true);
 
 	list.PushFront(3);
 	list.PushBack(4);
@@ -21,11 +24,11 @@ int main()
 	// copy constructor
 	{
 		SinglyLinkedList<int> list2 = list; // copy constructor
-		list2.SetPrintDebug(false);
+		list2.SetPrintDebug(true);
 		list2.Print();
 	}
 
-	list.Reverse();
+	list.Reverse(); // 5 4 3 2 1 연결만 바꿔서 
 	list.Print();
 
 	SinglyLinkedList<int>::Node* temp = list.Find(3);
@@ -37,6 +40,7 @@ int main()
 	list.Remove(temp);
 	list.Print();
 
+	
 	// PopFront()/Back() 테스트
 	for (int i = 0; i < 5; i++)
 	{
