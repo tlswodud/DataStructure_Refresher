@@ -83,7 +83,6 @@ void RecurPrint(Node* node)
 	{
 		RecurPrint(node->next);
 		cout << *node << endl;
-
 	}
 
 }

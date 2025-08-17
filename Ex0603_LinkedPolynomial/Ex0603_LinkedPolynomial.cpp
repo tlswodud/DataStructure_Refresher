@@ -13,7 +13,7 @@ class LinkedPolynomial : public SinglyLinkedList<Term>
 {
 public:
 	typedef SinglyLinkedList<Term>::Node Node;
-
+	 
 	void NewTerm(float coef, int exp)
 	{
 		// TODO:

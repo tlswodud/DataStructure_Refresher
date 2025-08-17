@@ -51,7 +51,7 @@ int main()
 		list.Print();
 
 		if (!list.IsEmpty())
-			cout << list.Front() << " " << list.Back() << endl;
+			cout <<"pop"<< list.Front() << " " << list.Back() << endl;
 	}
 
 	// Edge case 테스트 주의

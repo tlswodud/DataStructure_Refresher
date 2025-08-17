@@ -2,7 +2,18 @@
 
 #include <cassert>
 #include <stdint.h>
+/*
+CircularList: 연결 리스트로도 맨 뒤가 맨 앞으로 연결되는 구조를 만들 수 있습니다. 마지막 노드의 링크를 맨 앞 노드를 가리키도록 만들어주면 됩니다.
 
+LinkedStack: 스택도 연결 구조로 만들 수 있습니다.
+
+LinkedQueue: 큐도 연결 구조로 만들 수 있습니다.
+
+삽입과 삭제의 시간 복잡도가 배열 리스트에서는 O(n)이지만 연결 리스트에서는 O(1)입니다.
+
+
+
+*/
 template<typename T>
 class SinglyLinkedList
 {
@@ -26,7 +37,6 @@ public:
 		{
 			this->PushBack(current->item); //this 는 왜필요한걸까 
 			current = current->next;
-
 		}
 	}
 
@@ -34,22 +44,29 @@ public:
 	{
 		Clear();
 	}
+	//PopFront() 구현안했을떄 작성한코드 
+	//void Clear() // 모두 지워야(delete) 합니다.
+	//{
+	//	// TODO: 모두 삭제
+
+	//	Node* current = first_;
+	//	
+	//	while (current)
+	//	{
+	//		Node* temp = current->next;
+
+	//		delete current;
+
+	//		current = temp;
+	//	}
+
+
+	//}
 
 	void Clear() // 모두 지워야(delete) 합니다.
 	{
-		// TODO: 모두 삭제
-
-		Node* current = first_;
-		
-		while (current)
-		{
-			Node* temp = current->next;
-
-			delete current;
-
-			current = temp;
-		}
-
+		while (first_)
+			PopFront();
 	}
 
 	bool IsEmpty()
@@ -77,14 +94,23 @@ public:
 	{
 		assert(first_);
 
-		return T(); // TODO: 수정
+		T item = first_->item;
+
+		return item; // TODO: 수정
 	}
 
 	T Back()
 	{
 		assert(first_);
 
-		return T(); // TODO: 수정
+		Node* current = first_;
+
+		while (current->next)
+		{
+			current = current->next;
+
+		}
+		return current->item; // TODO: 수정
 	}
 
 	Node* Find(T item)
@@ -103,7 +129,7 @@ public:
 			current = current->next;			
 		}
 		
-		return 0;
+		return current;
 	}
 
 	void InsertBack(Node* node, T item) // 넣는 작업 
@@ -135,7 +161,6 @@ public:
 
 		current->next = new_node;
 
-		// TODO:
 	}
 
 	void Remove(Node* n)
@@ -164,11 +189,11 @@ public:
 
 		// 새로운 노드 만들기
 		// TODO:
-		Node* temp = new Node;
-		temp->item = item;
+		Node* temp = new Node; // 새로운 노드 만들고 
+		temp->item = item;     // 그 노드에 아이템 넣고 
 
-		temp->next = first_;
-		first_ = temp;
+		temp->next = first_;   // 새로운 노드의 넥스트는 first로하고 
+		first_ = temp;         // first 에 temp 
 
 		// 연결 관계 정리
 		// TODO:
@@ -177,7 +202,7 @@ public:
 	void PushBack(T item)
 	{	
 		
-		if (first_)
+		if (first_) 
 		{
 			Node* current = first_;
 			while (current->next) // current 의 next 가 nullptr 이면 종료 
@@ -223,9 +248,12 @@ public:
 			cout << "Nothing to Pop in PopFront()" << endl;
 			return;
 		}
-
-		assert(first_);
-
+		
+		Node* temp = first_;
+		first_ = first_->next;
+		delete temp;
+		
+	
 		// TODO: 메모리 삭제
 	}
 
@@ -240,27 +268,66 @@ public:
 
 		// 맨 뒤에서 하나 앞의 노드를 찾아야 합니다.
 
-		assert(first_);
+		
+		//MYCODE
+		//assert(first_);
+		/*Node* current = first_;
+		Node* nextcurrent = current->next;
+		
+		while (nextcurrent->next)
+		{			
+			current = nextcurrent;
 
-		Node* current = first_;
-		while (1)
-		{	
-			current = current->next;
-			if (current->next == nullptr)
-			{
-
-			}
+			nextcurrent = current->next;
 
 		}
+		current->next = nullptr;
 
+		delete nextcurrent;*/
 
+		//강의 코드 
 
+		if (first_->next == nullptr)
+		{
+			delete first_;
+			first_ = nullptr;
+		}//first 하나밖에 없을때 
+		assert(first_);
+
+		Node* second_last = first_;
+
+		while (second_last->next->next)
+		{
+			second_last = second_last->next;
+		}//마지막 노드 하나 전 노드
+
+		Node* temp = second_last->next; // 마지막 노드를 템프에 넣고 
+		second_last->next = second_last->next->next; // second 다음에는 다다음 거 넣기
+
+		delete temp; // 마지막 노드 삭제 
+
+		
 		// TODO: 메모리 삭제
 	}
+	//이건 새로 안만들고 못했다 
+	/*
+	이건 그냥 쳐보는게 좋겠다
 
+	*/
 	void Reverse()
 	{
-		// TODO: 
+		Node* current = first_;
+		Node* previous = nullptr;
+
+		while (current)
+		{
+			Node* temp = previous;
+			previous = current;
+			current = current->next;
+			previous->next = temp;
+		}
+		first_ = previous; 
+
 	}
 
 	void SetPrintDebug(bool flag)
@@ -288,7 +355,7 @@ public:
 
 					// 주소를 짧은 정수로 출력 (앞 부분은 대부분 동일하기때문에 뒷부분만 출력)
 					cout << "[" << reinterpret_cast<uintptr_t>(current) % 100000 << ", "
-						<< current->item << ", "
+						<< current->item << ", " 
 						<< reinterpret_cast<uintptr_t>(current->next) % 100000 << "]";
 				}
 				else
