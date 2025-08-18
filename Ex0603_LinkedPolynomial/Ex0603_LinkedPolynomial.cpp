@@ -1,6 +1,14 @@
 ﻿#include <iostream>
 #include "../shared/SinglyLinkedList.h"
+/*
+안내
+앞에서 배열로 만들었었던 "희소 다항식"을 연결 리스트로 구현해보세요.
 
+Ex0603_LinkedPolynomial을 완성하시면 됩니다.
+
+* 앞에서 이미 풀어본 문제와 거의 동일하기 때문에 영상이 제공되지 않습니다.
+
+*/
 using namespace std;
 
 struct Term
@@ -17,6 +25,15 @@ public:
 	void NewTerm(float coef, int exp)
 	{
 		// TODO:
+		Term term = { coef,  exp };
+		
+		//이건 포인터를 넘겨줘서 안되는거임 
+		/*Term* term = new Term;
+		term->exp = exp;
+		term->coef = coef;*/
+
+		PushBack(term);// 노드 자동생성해주니 노드 생성 필요없다 
+
 	}
 
 	float Eval(float x)
@@ -24,7 +41,23 @@ public:
 		float temp = 0.0f;
 
 		// TODO:
-
+		Node* node = first_;
+		
+		
+		while (node)
+		{
+			temp += (pow(x, node->item.exp) * node->item.coef);
+			node = node->next;
+		}
+		//강의 코드 
+		/*float temp = 0.0f;
+		Node* current = first_;
+		while (current)
+		{
+			temp += current->item.coef * std::powf(x, float(current->item.exp));
+			current = current->next;
+		}
+		return temp;*/
 		return temp;
 	}
 
@@ -39,6 +72,42 @@ public:
 		Node* j = poly.first_;
 
 		// TODO:
+		int n = 0;
+		while (i != nullptr && j != nullptr)
+		{	
+			
+			if (i->item.exp == j->item.exp) {
+				
+				temp.PushBack({ (i->item.coef + j->item.coef) , i->item.exp });
+				i = i->next;
+				j = j->next;
+
+			}
+			else if (i->item.exp > j->item.exp )
+			{
+				temp.PushBack({ (j->item.coef ) , j->item.exp });
+				j = j->next;
+			}
+			else if (i->item.exp < j->item.exp )
+			{
+				temp.PushBack({ (i->item.coef) , i->item.exp });
+				i = i->next;
+			}
+
+		}
+		if (i) {
+			while (i) {
+				temp.PushBack({ (i->item.coef) , i->item.exp });
+				i = i->next;
+			}
+		}
+		else if (j)
+		{
+			while (j) {
+				temp.PushBack({ (j->item.coef) , j->item.exp });
+				j = j->next;
+			}
+		}
 
 		return temp;
 	}
@@ -48,7 +117,17 @@ public:
 		bool is_first = true; // 더하기 출력시 확인용
 
 		// TODO:
+		Node* current = first_;
 
+		while (current)
+		{
+			cout << current->item.coef << "x^" << current->item.exp;
+			current = current->next;
+			if (current) {
+				cout<< " + ";
+			}
+		}
+	
 		cout << endl;
 	}
 
