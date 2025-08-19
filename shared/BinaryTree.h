@@ -70,8 +70,10 @@ public:
 	}
 
 	int Sum(Node* node)
-	{
-		return 0; // TODO:
+	{	
+		if (!node) return 0;
+		return node->item + Sum(node->left)+  Sum(node->right);
+
 	}
 
 	int Height()
@@ -81,7 +83,10 @@ public:
 
 	int Height(Node* node)
 	{
-		return 0; // TODO:
+		int height = 1;
+		if (!node) return 0;
+		
+		return height +std::max(Height(node->left) , Height(node->right)); // TODO:
 	}
 
 	~BinaryTree()
@@ -98,21 +103,41 @@ public:
 	}
 
 	void Preorder() { Preorder(root_); }
-	void Preorder(Node* node)
+	void Preorder(Node* node) // 6 2 1 3 5 4 
 	{
 		// TODO:
+		if (!node) return;
+
+		std::cout << node->item << " ";
+
+		Preorder(node->left);
+
+		Preorder(node->right);
+
 	};
 
 	void Inorder() { Inorder(root_); }
-	void Inorder(Node* node)
+	void Inorder(Node* node)// 1 3 2 6 5 4
 	{
 		// TODO:
+		if (!node)return;
+		Inorder(node->left);
+		std::cout << node->item << " ";
+		Inorder(node->right);
+	
+
 	}
 
 	void Postorder() { Postorder(root_); }
-	void Postorder(Node* node)
+	void Postorder(Node* node)// 3 1 2 4 5 6
 	{
 		// TODO:
+		if (!node)return;
+		Inorder(node->left);
+		Inorder(node->right);
+		std::cout << node->item << " ";
+
+
 	}
 
 	void LevelOrder()
