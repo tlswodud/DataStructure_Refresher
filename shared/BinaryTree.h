@@ -133,9 +133,7 @@ public:
 	{
 		// TODO:
 		if (!node)return;
-		Inorder(node->left);
-		Inorder(node->right);
-		std::cout << node->item << " ";
+		
 
 
 	}
