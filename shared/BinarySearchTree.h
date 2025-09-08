@@ -10,8 +10,8 @@ class BinarySearchTree
 public:
 	struct Item // key와 value의 쌍(pair)
 	{
-		K key = K();	// first
-		V value = V();	// second
+		K key = K();	// first   키를 통해 찾는다 
+		V value = V();	// second  
 	};
 
 	struct Node
@@ -53,29 +53,29 @@ public:
 		if (node)
 		{
 			Inorder(node->left);
-			cout << node->item.key << " ";
+			cout << node->item.key << " "; // key값 기준 정렬 
 			Inorder(node->right);
 		}
 	}
 
 	Item* RecurGet(const K& key)
 	{
-		return RecurGet(root_, key);
+		return RecurGet(root_, key); 
 	}
 
 	Item* RecurGet(Node* node, const K& key)
 	{
 		if (!node) return nullptr; // <- 동일한 키를 가진 노드를 찾지 못하면 nullptr을 반환하는 기능
 
-		if (key < node->item.key)
-			return RecurGet(node->left, key);
-		if (key > node->item.key)
-			return RecurGet(node->right, key);
+		if (key < node->item.key) // 작다면 
+			return RecurGet(node->left, key); // 왼쪽으로 가라 
+		if (key > node->item.key) // 크다면 
+			return RecurGet(node->right, key); // 오른쪽으로 
 
-		return &node->item; // if (key == node->item.key)
+		return &node->item; // if (key == node->item.key) // 같다면 찾은거니까 
 	}
 
-	Item* IterGet(const K& key)
+	Item* IterGet(const K& key) // 재귀 호출 사용하지 않고 RecurGet 을 구현해라 
 	{
 		// TODO:
 
@@ -89,7 +89,7 @@ public:
 		root_ = Insert(root_, item);
 	}
 
-	Node* Insert(Node* node, const Item& item)
+	Node* Insert(Node* node, const Item& item) 
 	{
 		// 힌트: RecurGet()
 
@@ -98,12 +98,12 @@ public:
 		return node;
 	}
 
-	void IterInsert(const Item& item)
+	void IterInsert(const Item& item) // 재귀 사용하지 않고 
 	{
 		// TODO:
 	}
 
-	Node* MinKeyLeft(Node* node)
+	Node* MinKeyLeft(Node* node) // 오른쪽 서브트리에서 가장 작은 값찾을떄 사용 이걸로 Remove 구현
 	{
 		assert(node);
 		while (node->left)
@@ -117,6 +117,14 @@ public:
 		cout << "Remove " << key << endl;
 		root_ = Remove(root_, key);
 	}
+	/*
+	제거 하고자 하는 값이 root라면 
+
+	오른 쪽 트리의 가장 작은값 또는 왼쪽 트리의 가장 큰값을 root로 두면
+
+	이진 트리의 특징을 유지 할 수 있다
+
+	*/
 
 	Node* Remove(Node* node, const K& key)
 	{
@@ -128,7 +136,9 @@ public:
 			node->right = Remove(node->right, key);
 		else
 		{
-			// TODO:
+			// TODO: 여기에 root 삭제 시 이진트리 유지하고 구현  // 복사를 하면 좀 더 편하다?
+
+			// 자식이 둘다 있거나 하나 만 있거나 하는 경우 구현
 		}
 
 		return node;

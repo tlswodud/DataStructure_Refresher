@@ -232,13 +232,30 @@ public:
 		s1.Push(root_);
 
 		while (!s1.IsEmpty())
-		{
-			// TODO:
+		{	
+			Node* node = s1.Top();
+			
+			s1.Pop();
+			s2.Push(node);
+			Visit(s2.Top());
+			
+			if (node->left)
+			{
+				s1.Push(node->left);
+			
+			}
+			if(node->right)
+			{	
+				s1.Push(node->right);
+			}
+			
 		}
-
 		while (!s2.IsEmpty())
 		{
-			// TODO:
+			Node* node = s2.Top();
+			s2.Pop();
+
+			Visit(node);
 		}
 	}
 

@@ -24,18 +24,18 @@ int main()
 	bst.Inorder(); // key에 대해 정렬된 순서로 출력
 
 	// 탐색
-	cout << bst.RecurGet(5)->value << endl; // if(bst.RecurGet(5)) cout << bst.RecurGet(5)->value << endl;
+	cout << bst.RecurGet(5)->value << endl; // if(bst.RecurGet(5)) cout << bst.RecurGet(5)->value << endl; // 탐색 5를 통해 Value 탐색 
 	cout << bst.RecurGet(3)->value << endl;
 	cout << bst.RecurGet(7)->value << endl;
 	cout << bst.RecurGet(1)->value << endl;
 	cout << bst.RecurGet(4)->value << endl;
 
-	bst.Remove(999); // 없는 키에대해 삭제
+	bst.Remove(999); // 없는 키에대해 삭제 // 없는 키 값은 변화 없다 
 	bst.Print2D();
 
 	for (int i : {5, 4, 7, 3})
 	{
-		bst.Remove(i);
+		bst.Remove(i); // 하나씩 제거 하는것 
 		bst.Print2D();
 	}
 

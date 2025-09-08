@@ -31,18 +31,61 @@ public:
 
 	int Evaluate(Node* node)
 	{
-		// TODO: 트리에 저장된 수식의 결과값을 계산
+
+		if (isdigit(node->item))
+		{
+			return node->item - '0';
+		}
+
+		else if (node->item == '*')
+		{
+			return Evaluate(node->left) * Evaluate(node->right);
+		}
+
+		else if (node->item == '+')
+		{
+			return Evaluate(node->left) + Evaluate(node->right);
+		}
+		else if (node->item == '-')
+		{
+			return Evaluate(node->left) - Evaluate(node->right);
+		}
+		else
+			return Evaluate(node->left) / Evaluate(node->right);
+
 		return 0;
 	}
 
 	void Infix() { Infix(root_); cout << endl; }
 	void Infix(Node* node) {
 		// TODO: 수식을 Infix 형식으로 출력 (괄호 포함)
+
+		if (node)
+		{	
+			std::cout<<"node" << node->item << endl;
+
+
+			if (!isdigit(node->item)) cout << "("; // 노드가 숫자가 아니라면 ( 를넣고       숫자니까 ( 안넣고     
+			Infix(node->left);                     // 노드의 왼쪽 을 넣고                      위로                 왼쪽 없으니 
+			cout << node->item;                                                                                     // 다음 5 출력 + 
+			Infix(node->right);
+			if (!isdigit(node->item)) cout << ")";
+		}
+
+	
 	}
 
 	void Postfix() { Postfix(root_);  cout << endl; }
 	void Postfix(Node* node) {
 		// TODO: 수식을 Postfix 형식으로 출력
+
+		if (node)
+		{
+			Postfix(node->left);
+			Postfix(node->right);
+			cout << node->item;
+		}
+		
 	}
 
 	// Infix -> postfix -> expression tree
@@ -68,16 +111,24 @@ public:
 			char c = postfix.Front();
 			postfix.Dequeue();
 
-			if (c >= '0' && c <= '9')
+			if (c >= '0' && c <= '9')// 숫자라면 
 			{
 				// TODO:
+				Node* temp = new Node{ c , nullptr , nullptr };
+
+				s.Push(temp);
+
 			}
 			else
 			{
-				// TODO:
+				Node* right = s.Top();
+				s.Pop();
+				Node* left = s.Top();
+				s.Pop();
+				Node* temp = new Node{ c,left, right };
+				s.Push(temp);
 			}
 		}
-
 		root_ = s.Top();
 	}
 };
@@ -201,11 +252,11 @@ void InfixToPostfix(Queue<char>& q, Queue<char>& output)
 			s.Push(c);
 		}
 
-		//cout << "Stack: ";
-		//s.Print();
-		//cout << "Output:";
-		//output.Print();
-		//cout << endl;
+		cout << "Stack: ";
+		s.Print();
+		cout << "Output:";
+		output.Print();
+		cout << endl;
 	}
 
 	// 스택에 남아있는 것들을 모두 추가
