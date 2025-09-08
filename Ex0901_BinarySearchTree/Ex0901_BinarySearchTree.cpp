@@ -4,6 +4,12 @@
 
 using namespace std;
 
+// 이진 탐색 트리
+// 양 깊이 가 비슷해야 빨리 찾을 수 있다 O(log(n)) 
+// 일 열로 나눠진 트리라면 연결리스트랑 유사하고 O(n) 
+
+// 불균형한건 찾기 힘들고 이진 탐색트리는 한계가 있음  - > 감을 잡고 다음 알고리즘을 공부해보자
+
 int main()
 {
 	using Item = BinarySearchTree<int, char>::Item;
@@ -38,6 +44,8 @@ int main()
 		bst.Remove(i); // 하나씩 제거 하는것 
 		bst.Print2D();
 	}
+
+
 
 	return 0;
 }
