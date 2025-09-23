@@ -78,9 +78,32 @@ public:
 	Item* IterGet(const K& key) // 재귀 호출 사용하지 않고 RecurGet 을 구현해라 
 	{
 		// TODO:
-
-		return nullptr; // No matching
+		Node* current = root_;
+		while (current)
+		{
+			if (key < current->item.key) current = current->left;
+			else if (key > current->item.key) current = current->right;
+			else return &current->item;
+		}
 	}
+	/*
+	
+	Item* IterGet(const K& key) // 재귀 호출 사용하지 않고 RecurGet 을 구현해라 
+	{
+		// TODO:
+		Node* node = root_;
+
+		while (key < node->item.key)
+		{
+			node = node->left;
+		}
+
+		while (key > node->item.key)
+		{
+			node = node->right;
+		}
+		return &node->item; // No matching
+	}*/
 
 	void Insert(const Item& item)
 	{
@@ -90,17 +113,52 @@ public:
 	}
 
 	Node* Insert(Node* node, const Item& item) 
-	{
-		// 힌트: RecurGet()
+	{	
+		if (!node) return new Node{ item , nullptr , nullptr }; // 들어온 노드가 널이라면 생성 , 자식이 없는 노드라는 뜻
 
-		// TODO:
-
+		if (item.key < node->item.key)
+		{
+			node->left = Insert(node->left, item); // 현재 노드 보다 작다면 재귀적으로 끝까지 가서 left 에 넣어줌
+		}
+		else if (item.key > node->item.key)
+		{
+			node->right = Insert(node->right, item);
+		}
+		else
+		{
+			node->item = item;
+		}
 		return node;
 	}
 
 	void IterInsert(const Item& item) // 재귀 사용하지 않고 
 	{
 		// TODO:
+		Node* p = root_;
+		Node* pp = nullptr;
+
+		while (p)
+		{
+			pp = p; // 현재 노드 부모로 기억한다 
+
+			if (item.key < p->item.key) p = p->left;
+			else if (item.key > p->item.key) p = p->right;
+
+			else
+			{
+				p->item.value = item.value;
+				return;
+			}
+		}
+		
+		p = new Node{ item , nullptr, nullptr }; // null 이 되면 여기에 넣어야함
+
+		if (root_)
+		{
+			if (item.key < pp->item.key) pp->left = p;
+			else pp->right = p;
+		}
+		else root_ = p;
 	}
 
 	Node* MinKeyLeft(Node* node) // 오른쪽 서브트리에서 가장 작은 값찾을떄 사용 이걸로 Remove 구현
@@ -139,9 +197,31 @@ public:
 			// TODO: 여기에 root 삭제 시 이진트리 유지하고 구현  // 복사를 하면 좀 더 편하다?
 
 			// 자식이 둘다 있거나 하나 만 있거나 하는 경우 구현
+			if (!node->left)
+			{
+				Node* temp = node->right;
+
+				delete node;
+
+				return temp;
+
+			}
+			else if (!node->left)
+			{
+				Node* temp = node->left; // temp 에 노드 left 값을 넣고 
+				 
+				delete node;             // 노드를 삭제하고 
+
+				return temp;            // temp 반환
+			}
+			
+			Node* temp = MinKeyLeft(node->right); // 오른 쪽에서 가장 작은값을 temp 로 넣고 
+			node->item = temp->item;              //  temp 의 아이템을 노드에 넣고 
+			node->right = Remove(node->right, temp->item.key);  // temp 아이템 key 값을 삭제
+
 		}
 
-		return node;
+
 	}
 
 	int Height()

@@ -3,6 +3,23 @@
 
 using namespace std;
 
+/*
+통을 만들어서 인덱스로 정렬하는거네
+
+자리수를 나눠서 정렬하라?
+
+일의 자리 부터 보고 기수정렬
+
+십의 자리 정렬
+
+백의 자리 정렬 아무것도 없으면 0
+
+이렇게 하면 모두 정렬 가능하다
+
+
+*/
+
+
 bool CheckSorted(int* arr, int size)
 {
 	for (int i = 0; i < size - 1; i++)
@@ -41,9 +58,24 @@ int main()
 
 	int m = GetMax(arr, n); // 가장 큰 자리수를 찾기 위해서
 
-	for (int exp = 1; m / exp > 0; exp *= 10)
+	for(int exp = 1; m  / exp > 0; exp *= 10)
 	{
-		// TODO:
+		for (int i = 0; i < n; i++)
+		{
+			queues[(arr[i] / exp) % 10 ].Enqueue(arr[i]);
+		}
+
+		int count = 0;
+		
+		for (int i = 0; i < n; i++)
+		{
+			while (!queues[i].IsEmpty())
+			{
+				arr[count] = queues[i].Front();
+				queues[i].Dequeue();
+				count++;
+			}
+		}
 
 		Print(arr, n);
 	}

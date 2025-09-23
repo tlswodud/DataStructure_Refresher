@@ -1,6 +1,13 @@
 ﻿#include <iostream>
 #include <iomanip>
+/*
+쉘 알고리즘 건너뛰기 
 
+gap 만큼 건너 뛰는거다
+
+삽입 정렬 코드랑 비슷하다 
+
+*/
 using namespace std;
 
 bool CheckSorted(int* arr, int size)
@@ -54,7 +61,20 @@ void InsertionSort(int arr[], int n, int gap) // gap 추가
 		cout << "Before : ";
 		Print(arr, n, i, gap);
 
-		// TODO:
+		
+	
+
+		int key = arr[i];
+		int j = i;
+
+		cout << "key = " << key << "\n";
+
+		for (; j >= gap && arr[j - gap] > key; j -= gap) {
+			arr[j] = arr[j - gap];
+			Print(arr, n, i, gap);
+		}
+		arr[j] = key;
+
 
 		cout << " After : ";
 		Print(arr, n, i, gap);
@@ -64,7 +84,7 @@ void InsertionSort(int arr[], int n, int gap) // gap 추가
 void ShellSort(int arr[], int n)
 {
 	for (int gap = n / 2; gap > 0; gap /= 2)
-	{
+	{	
 		cout << "         ";
 		Print(arr, n);
 
@@ -82,6 +102,10 @@ int main()
 	int n = sizeof(arr) / sizeof(arr[0]);
 
 	ShellSort(arr, n);
+
+
+
+
 
 	// 최악 O(n^2), 평균 O(n^1.5)
 }

@@ -3,6 +3,19 @@
 
 using namespace std;
 
+/*
+merged sort 
+합친다란 의미를 가지고 있다.
+
+쪼개고 잘게 한다음 
+
+정렬하면서 합치는거것 
+
+
+*/
+
+
+
 bool CheckSorted(int* arr, int size)
 {
 	for (int i = 0; i < size - 1; i++)
@@ -35,14 +48,40 @@ void Merge(int init[], int merged[], int left, int mid, int right)
 
 	// 인덱스를 2개 이용해서 정렬하면서 merge
 	// TODO:
+	
 
-	// 남은 내용들 복사
-	// TODO:
 
-	// merged -> init 복사
+	while (i <= mid && j <= right)
+	{
+		if (init[i] <= init[j])
+		{
+			merged[k] = init[i];
+			k++;
+			i++;
+		}
+		else
+		{
+			merged[k] = init[j];
+			k++;
+			j++;
+		}
+	}
+
+	if (i > mid)
+		for (l = j; l <= right;l++)
+		{
+			merged[k++] = init[l];
+		}
+
+	else
+		for (l = i; l <= mid;l++)
+			merged[k++] = init[l];
+
 	for (l = left; l <= right; l++)
+	{
 		init[l] = merged[l];
-
+	}
+	
 	cout << "Merged : ";
 	Print(init, left, right);
 	cout << endl;

@@ -7,18 +7,18 @@
 using namespace std;
 
 template<typename T>
-class AdjListGraph // Adjacent List Graph
+class AdjListGraph // Adjacent List Graph 인접 리스트 그래프 
 {
 public:
 	struct Vertex
 	{
-		T item = T();
+		T item = T(); // 아이템 저장 
 	};
 
 	struct Node
 	{
 		//Vertex* vertex = nullptr;
-		int vertex = -1; // vertex의 index
+		int vertex = -1; // vertex의 index 저장 안된거 
 		Node* next = nullptr;
 	};
 
@@ -91,17 +91,100 @@ public:
 
 	void DepthFirstTraversal(int v) // v는 인덱스
 	{
-		// TODO:
+		// TODO:재귀를 활용한 방식 
+
+		visited_[v] = true;
+		Node* current = list_[v];
+		cout << vertices_[v].item << " ";
+		
+		while (current)
+		{	
+			if(!visited_[current->vertex])
+				DepthFirstTraversal(current->vertex);
+			
+			current = current->next; //while 문을 통해 current 를 next로 바꿔주면서 
+		}
+
 	}
 
 	void IterDFT()
 	{
-		// TODO:
+		// TODO:stack
+		ResetVisited();
+
+		int v = 0;
+
+		Stack <int> s;
+		s.Push(v);
+		visited_[v] = true;
+
+		while (!s.IsEmpty())
+		{
+			v = s.Top();
+			s.Pop();
+
+			cout << vertices_[v].item << " ";
+
+			Node* current = list_[v]; // 연결리스트 사용
+
+			while (current)
+			{
+				int w = current->vertex;
+				if (!visited_[w])
+				{
+					s.Push(w);
+					visited_[w] = true;
+
+				}
+				current = current->next;
+			}
+			cout << "stack  ";
+			s.Print();
+		}
+
 	}
 
 	void BreadthFirstTraversal()
 	{
-		// TODO:
+		// TODO: queue 
+		int v = 0;
+
+		Queue<int> q;
+
+		ResetVisited();
+
+		visited_[v] = true;
+		q.Enqueue(v);
+
+	
+
+		while (!q.IsEmpty())
+		{
+			v = q.Front();
+			q.Dequeue();
+
+			cout << vertices_[v].item << " ";
+
+			Node* current = list_[v];
+
+			while (current)
+			{
+				int w = current->vertex;
+				if (!visited_[w])
+				{
+					visited_[w] = true;
+					q.Enqueue(w);
+				}
+
+				current = current->next;
+			}
+		}
+		cout << "Queue ";
+		q.Print();
+		cout << endl;
+
+
+
 	}
 
 	void ResetVisited()
@@ -113,7 +196,7 @@ public:
 
 private:
 	Vertex* vertices_ = nullptr;
-	Node** list_ = nullptr;
+	Node** list_ = nullptr;     // 연결리스트 노드의 이중 포인터 
 	int n_ = 0;					// size
 	int max_vertices_ = 0;		// capacity
 
