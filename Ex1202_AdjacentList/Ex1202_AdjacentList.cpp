@@ -156,7 +156,7 @@ public:
 		visited_[v] = true;
 		q.Enqueue(v);
 
-	
+		cout << vertices_[v].item << " ";
 
 		while (!q.IsEmpty())
 		{
@@ -181,7 +181,7 @@ public:
 		}
 		cout << "Queue ";
 		q.Print();
-		cout << endl;
+
 
 
 
